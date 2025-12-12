@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tarek Ziadé</title>
+
+  <!-- Favicon reused from blog.ziade.org -->
   <link rel="icon" href="https://blog.ziade.org/favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="https://blog.ziade.org/favicon.ico" type="image/x-icon">
 
@@ -34,7 +36,7 @@
     }
 
     .badges a {
-      text-decoration: none; /* no underline */
+      text-decoration: none;
     }
 
     .badges img {
@@ -72,16 +74,8 @@
       opacity: 0.9;
     }
 
-    .sparkle::before {
-      width: 14px;
-      height: 2px;
-    }
-
-    .sparkle::after {
-      width: 2px;
-      height: 14px;
-      background: linear-gradient(to bottom, transparent, #ffffff, transparent);
-    }
+    .sparkle::before { width: 14px; height: 2px; }
+    .sparkle::after { width: 2px; height: 14px; }
 
     @keyframes sparkle-fade {
       0% { opacity: 1; transform: scale(0.3) translate(-50%, -50%); }
@@ -89,7 +83,7 @@
       100% { opacity: 0; transform: scale(0.2) translate(-50%, -40%); }
     }
 
-    /* Nyan Cat flying animation */
+    /* Nyan Cat: fade left edge */
     .nyan-cat {
       position: fixed;
       top: var(--nyan-y);
@@ -99,58 +93,17 @@
       pointer-events: none;
       z-index: 0;
       animation: nyan-fly var(--speed) linear infinite;
+      image-rendering: pixelated;
+
+      /* Left-side fade mask */
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 35%);
+      mask-image: linear-gradient(to right, transparent 0%, black 35%);
     }
 
     @keyframes nyan-fly {
-      0% {
-        transform: translateX(0);
-        opacity: 0;
-      }
-      5% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateX(120vw);
-        opacity: 1;
-      }
-    }
-
-    /* Rainbow trail for Nyan Cat */
-    .rainbow {
-      position: fixed;
-      top: calc(var(--nyan-y) + 60px);
-      left: -200px;
-      width: 300px;
-      height: 12px;
-      pointer-events: none;
-      background: linear-gradient(
-        to right,
-        #ff0000,
-        #ff7f00,
-        #ffff00,
-        #00ff00,
-        #0000ff,
-        #4b0082,
-        #9400d3
-      );
-      filter: blur(2px);
-      opacity: 0.85;
-      animation: nyan-rainbow var(--speed) linear infinite;
-      z-index: 0;
-    }
-
-    @keyframes nyan-rainbow {
-      0% {
-        transform: translateX(0);
-        opacity: 0;
-      }
-      5% {
-        opacity: 0.85;
-      }
-      100% {
-        transform: translateX(120vw);
-        opacity: 0.85;
-      }
+      0%   { transform: translateX(0);     opacity: 0; }
+      5%   { opacity: 1; }
+      100% { transform: translateX(120vw); opacity: 1; }
     }
   </style>
 </head>
@@ -162,15 +115,12 @@
     <a href="https://blog.ziade.org">
       <img src="https://img.shields.io/badge/Blog-ziade.org-lightgrey?logo=rss&logoColor=white" alt="Blog Badge">
     </a>
-
     <a href="https://github.com/tarekziade">
       <img src="https://img.shields.io/badge/GitHub-tarekziade-black?logo=github&logoColor=white" alt="GitHub Badge">
     </a>
-
     <a href="https://framapiaf.org/@tarek">
       <img src="https://img.shields.io/badge/Mastodon-@tarek-6364FF?logo=mastodon&logoColor=white" alt="Mastodon Badge">
     </a>
-
     <a href="mailto:tarek@ziade.org">
       <img src="https://img.shields.io/badge/Email-tarek%40ziade.org-red?logo=gmail&logoColor=white" alt="Email Badge">
     </a>
@@ -219,40 +169,32 @@
     })();
   </script>
 
-  <!-- Nyan Cat -->
+  <!-- Nyan Cat (left fade) -->
   <script>
     (function () {
       const NYAN_URL = "https://ziade.org/nyan-cat.gif";
-
 
       function spawnNyanCat() {
         const y = Math.random() * window.innerHeight * 0.6 + 40;
         const speed = 8000 + Math.random() * 4000;
 
-        const rainbow = document.createElement("div");
-        rainbow.className = "rainbow";
-        rainbow.style.setProperty("--nyan-y", y + "px");
-        rainbow.style.setProperty("--speed", speed + "ms");
-
         const cat = document.createElement("img");
         cat.className = "nyan-cat";
         cat.src = NYAN_URL;
+        cat.alt = "Nyan Cat";
         cat.style.setProperty("--nyan-y", y + "px");
         cat.style.setProperty("--speed", speed + "ms");
 
-        document.body.appendChild(rainbow);
         document.body.appendChild(cat);
 
-        setTimeout(() => {
-          rainbow.remove();
-          cat.remove();
-        }, speed + 200);
+        setTimeout(() => cat.remove(), speed + 200);
       }
 
-      // First one right away, then every 10 seconds
       spawnNyanCat();
       setInterval(spawnNyanCat, 10000);
     })();
   </script>
+
 </body>
 </html>
+
