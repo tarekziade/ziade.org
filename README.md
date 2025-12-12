@@ -1,4 +1,6 @@
-# Hello!
+
+Hi, I’m Tarek Ziadé. This is my personal domain.
+
 
 [![Blog](https://img.shields.io/badge/Blog-ziade.org-lightgrey?logo=rss&logoColor=white)](https://blog.ziade.org)
 [![GitHub](https://img.shields.io/badge/GitHub-tarekziade-black?logo=github&logoColor=white)](https://github.com/tarekziade)
