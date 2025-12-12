@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarek Ziadé</title>
+
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+
+    body {
+      font-family: system-ui, sans-serif;
+      line-height: 1.6;
+      max-width: 700px;
+      margin: 60px auto;
+      padding: 0 20px;
+      text-align: center;
+      color: #222;
+      background:
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.9), transparent 55%),
+        radial-gradient(circle at bottom, #f5f5ff, #e7e7ff);
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        color: #f8f8f8;
+        background:
+          radial-gradient(circle at top, #333, transparent 55%),
+          radial-gradient(circle at bottom, #050510, #000000);
+      }
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .badges {
+      position: relative;
+      z-index: 1;
+    }
+
+    .badges img {
+      margin: 6px;
+    }
+
+    /* Sparkle base style */
+    .sparkle {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, #fff, #ffe6ff 40%, transparent 70%);
+      box-shadow:
+        0 0 8px rgba(255, 255, 255, 0.9),
+        0 0 16px rgba(255, 200, 255, 0.7);
+      opacity: 0;
+      transform: scale(0.3) translate(-50%, -50%);
+      animation: sparkle-fade 650ms ease-out forwards;
+      mix-blend-mode: screen;
+      z-index: 0;
+    }
+
+    /* Twinkly cross overlay */
+    .sparkle::before,
+    .sparkle::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      border-radius: 999px;
+      background: linear-gradient(to right, transparent, #ffffff, transparent);
+      opacity: 0.9;
+    }
+
+    .sparkle::before {
+      width: 14px;
+      height: 2px;
+    }
+
+    .sparkle::after {
+      width: 2px;
+      height: 14px;
+      background: linear-gradient(to bottom, transparent, #ffffff, transparent);
+    }
+
+    @keyframes sparkle-fade {
+      0% {
+        opacity: 1;
+        transform: scale(0.3) translate(-50%, -50%);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1) translate(-50%, -60%);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.2) translate(-50%, -40%);
+      }
+    }
+
+    /* Respect reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .sparkle {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Hi, I’m Tarek Ziadé. This is my personal domain.</h1>
+
+  <div class="badges">
+    <a href="https://blog.ziade.org">
+      <img src="https://img.shields.io/badge/Blog-ziade.org-lightgrey?logo=rss&logoColor=white" alt="Blog Badge">
+    </a>
+
+    <a href="https://github.com/tarekziade">
+      <img src="https://img.shields.io/badge/GitHub-tarekziade-black?logo=github&logoColor=white" alt="GitHub Badge">
+    </a>
+
+    <a href="https://framapiaf.org/@tarek">
+      <img src="https://img.shields.io/badge/Mastodon-@tarek-6364FF?logo=mastodon&logoColor=white" alt="Mastodon Badge">
+    </a>
+
+    <a href="mailto:tarek@ziade.org">
+      <img src="https://img.shields.io/badge/Email-tarek%40ziade.org-red?logo=gmail&logoColor=white" alt="Email Badge">
+    </a>
+  </div>
+
+  <script>
+    (function () {
+      const MAX_SPARKLES = 80;
+
+      function createSparkle(x, y) {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+
+        // Slight random offset around cursor
+        const offsetX = (Math.random() - 0.5) * 40;
+        const offsetY = (Math.random() - 0.5) * 40;
+
+        sparkle.style.left = x + offsetX + "px";
+        sparkle.style.top = y + offsetY + "px";
+
+        // Random size for variety
+        const size = 4 + Math.random() * 6;
+        sparkle.style.width = size + "px";
+        sparkle.style.height = size + "px";
+
+        // Random duration
+        const duration = 400 + Math.random() * 500;
+        sparkle.style.animationDuration = duration + "ms";
+
+        document.body.appendChild(sparkle);
+
+        // Clean up
+        window.setTimeout(() => {
+          sparkle.remove();
+        }, duration + 100);
+      }
+
+      // Light throttle so it stays smooth
+      let lastTime = 0;
+      document.addEventListener("mousemove", (e) => {
+        const now = performance.now();
+        if (now - lastTime < 25) return;
+        lastTime = now;
+
+        const currentSparkles = document.querySelectorAll(".sparkle").length;
+        if (currentSparkles >= MAX_SPARKLES) return;
+
+        const count = 1 + Math.floor(Math.random() * 3);
+        for (let i = 0; i < count; i++) {
+          createSparkle(e.clientX, e.clientY);
+        }
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>
