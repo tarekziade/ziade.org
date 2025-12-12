@@ -10,21 +10,32 @@
       color-scheme: light dark;
     }
 
+
+    .badges a {
+  text-decoration: none;      /* Remove underline */
+  border: none;
+}
+
+.badges img {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 6px;
+}
+
+
     body {
-      font-family: system-ui, sans-serif;
-      line-height: 1.6;
-      max-width: 700px;
-      margin: 60px auto;
-      padding: 0 20px;
-      text-align: center;
-      color: #222;
-      background:
-        radial-gradient(circle at top, rgba(255, 255, 255, 0.9), transparent 55%),
-        radial-gradient(circle at bottom, #f5f5ff, #e7e7ff);
-      min-height: 100vh;
-      position: relative;
-      overflow: hidden;
-    }
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 0 20px;
+    text-align: center;
+    color: #f0f0f0;
+    background: radial-gradient(circle at center, #1a1a1f 0%, #0d0d12 70%);
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
 
     @media (prefers-color-scheme: dark) {
       body {
