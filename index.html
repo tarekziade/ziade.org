@@ -6,48 +6,21 @@
   <title>Tarek Ziadé</title>
 
   <style>
-    :root {
-      color-scheme: light dark;
-    }
-
-
-    .badges a {
-  text-decoration: none;      /* Remove underline */
-  border: none;
-}
-
-.badges img {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 6px;
-}
-
-
     body {
-    font-family: system-ui, sans-serif;
-    line-height: 1.6;
-    max-width: 700px;
-    margin: 60px auto;
-    padding: 0 20px;
-    text-align: center;
-    color: #f0f0f0;
-    background: radial-gradient(circle at center, #1a1a1f 0%, #0d0d12 70%);
-    min-height: 100vh;
-    overflow: hidden;
-  }
-
-
-    @media (prefers-color-scheme: dark) {
-      body {
-        color: #f8f8f8;
-        background:
-          radial-gradient(circle at top, #333, transparent 55%),
-          radial-gradient(circle at bottom, #050510, #000000);
-      }
+      font-family: system-ui, sans-serif;
+      line-height: 1.6;
+      max-width: 700px;
+      margin: 60px auto;
+      padding: 0 20px;
+      text-align: center;
+      color: #f0f0f0;
+      background: radial-gradient(circle at center, #1a1a1f 0%, #0d0d12 70%);
+      min-height: 100vh;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       margin-bottom: 1.5rem;
       position: relative;
       z-index: 1;
@@ -58,11 +31,17 @@
       z-index: 1;
     }
 
-    .badges img {
-      margin: 6px;
+    .badges a {
+      text-decoration: none; /* no underline */
     }
 
-    /* Sparkle base style */
+    .badges img {
+      margin: 6px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    /* Sparkle styles */
     .sparkle {
       position: fixed;
       width: 6px;
@@ -80,7 +59,6 @@
       z-index: 0;
     }
 
-    /* Twinkly cross overlay */
     .sparkle::before,
     .sparkle::after {
       content: "";
@@ -104,25 +82,72 @@
     }
 
     @keyframes sparkle-fade {
+      0% { opacity: 1; transform: scale(0.3) translate(-50%, -50%); }
+      50% { opacity: 1; transform: scale(1) translate(-50%, -60%); }
+      100% { opacity: 0; transform: scale(0.2) translate(-50%, -40%); }
+    }
+
+    /* Nyan Cat flying animation */
+    .nyan-cat {
+      position: fixed;
+      top: var(--nyan-y);
+      left: -200px;
+      width: 180px;
+      height: auto;
+      pointer-events: none;
+      z-index: 0;
+      animation: nyan-fly var(--speed) linear infinite;
+    }
+
+    @keyframes nyan-fly {
       0% {
-        opacity: 1;
-        transform: scale(0.3) translate(-50%, -50%);
+        transform: translateX(0);
+        opacity: 0;
       }
-      50% {
+      5% {
         opacity: 1;
-        transform: scale(1) translate(-50%, -60%);
       }
       100% {
-        opacity: 0;
-        transform: scale(0.2) translate(-50%, -40%);
+        transform: translateX(120vw);
+        opacity: 1;
       }
     }
 
-    /* Respect reduced motion preference */
-    @media (prefers-reduced-motion: reduce) {
-      .sparkle {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
+    /* Rainbow trail for Nyan Cat */
+    .rainbow {
+      position: fixed;
+      top: calc(var(--nyan-y) + 60px);
+      left: -200px;
+      width: 300px;
+      height: 12px;
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        #ff0000,
+        #ff7f00,
+        #ffff00,
+        #00ff00,
+        #0000ff,
+        #4b0082,
+        #9400d3
+      );
+      filter: blur(2px);
+      opacity: 0.85;
+      animation: nyan-rainbow var(--speed) linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes nyan-rainbow {
+      0% {
+        transform: translateX(0);
+        opacity: 0;
+      }
+      5% {
+        opacity: 0.85;
+      }
+      100% {
+        transform: translateX(120vw);
+        opacity: 0.85;
       }
     }
   </style>
@@ -149,6 +174,7 @@
     </a>
   </div>
 
+  <!-- Sparkles -->
   <script>
     (function () {
       const MAX_SPARKLES = 80;
@@ -157,45 +183,72 @@
         const sparkle = document.createElement("div");
         sparkle.className = "sparkle";
 
-        // Slight random offset around cursor
         const offsetX = (Math.random() - 0.5) * 40;
         const offsetY = (Math.random() - 0.5) * 40;
 
         sparkle.style.left = x + offsetX + "px";
         sparkle.style.top = y + offsetY + "px";
 
-        // Random size for variety
         const size = 4 + Math.random() * 6;
         sparkle.style.width = size + "px";
         sparkle.style.height = size + "px";
 
-        // Random duration
         const duration = 400 + Math.random() * 500;
         sparkle.style.animationDuration = duration + "ms";
 
         document.body.appendChild(sparkle);
-
-        // Clean up
-        window.setTimeout(() => {
-          sparkle.remove();
-        }, duration + 100);
+        setTimeout(() => sparkle.remove(), duration + 100);
       }
 
-      // Light throttle so it stays smooth
       let lastTime = 0;
       document.addEventListener("mousemove", (e) => {
         const now = performance.now();
         if (now - lastTime < 25) return;
         lastTime = now;
 
-        const currentSparkles = document.querySelectorAll(".sparkle").length;
-        if (currentSparkles >= MAX_SPARKLES) return;
+        const current = document.querySelectorAll(".sparkle").length;
+        if (current >= MAX_SPARKLES) return;
 
         const count = 1 + Math.floor(Math.random() * 3);
         for (let i = 0; i < count; i++) {
           createSparkle(e.clientX, e.clientY);
         }
       }, { passive: true });
+    })();
+  </script>
+
+  <!-- Nyan Cat -->
+  <script>
+    (function () {
+      const NYAN_URL = "https://media.giphy.com/media/sIIhZliB2McAo/giphy.gif";
+
+      function spawnNyanCat() {
+        const y = Math.random() * window.innerHeight * 0.6 + 40;
+        const speed = 8000 + Math.random() * 4000;
+
+        const rainbow = document.createElement("div");
+        rainbow.className = "rainbow";
+        rainbow.style.setProperty("--nyan-y", y + "px");
+        rainbow.style.setProperty("--speed", speed + "ms");
+
+        const cat = document.createElement("img");
+        cat.className = "nyan-cat";
+        cat.src = NYAN_URL;
+        cat.style.setProperty("--nyan-y", y + "px");
+        cat.style.setProperty("--speed", speed + "ms");
+
+        document.body.appendChild(rainbow);
+        document.body.appendChild(cat);
+
+        setTimeout(() => {
+          rainbow.remove();
+          cat.remove();
+        }, speed + 200);
+      }
+
+      // First one right away, then every 10 seconds
+      spawnNyanCat();
+      setInterval(spawnNyanCat, 10000);
     })();
   </script>
 </body>
